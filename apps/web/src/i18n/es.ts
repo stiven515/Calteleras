@@ -13,6 +13,9 @@ export const es = {
     otherTemplate: '← Elegir otra plantilla',
     removeImage: 'Quitar',
     colors: { bg: 'Fondo', fg: 'Texto', accent: 'Acento', muted: 'Secundario' },
+    contrastTitle: 'Atención: algunos colores se leerán mal',
+    contrastIssue: (slot: 'fg' | 'muted' | 'accent', ratio: number) =>
+      `${{ fg: 'El texto', muted: 'El texto secundario', accent: 'El acento' }[slot]} casi no se distingue del fondo (contraste ${ratio.toFixed(1)}:1).`,
   },
   create: {
     title: '¿Qué quieres crear?',

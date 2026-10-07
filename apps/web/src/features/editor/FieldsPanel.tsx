@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import type { FieldDef, Palette } from '@cartelera/core';
+import { checkPalette, type FieldDef, type Palette } from '@cartelera/core';
 import type { TemplateDef } from '@cartelera/templates';
 import { es } from '../../i18n/es';
 import { useEditor } from '../../stores/editorStore';
@@ -72,6 +72,7 @@ function Field({ def }: { def: FieldDef }) {
 export function FieldsPanel({ template }: { template: TemplateDef }) {
   const palette = useEditor((s) => s.palette);
   const setColor = useEditor((s) => s.setColor);
+  const issues = palette ? checkPalette(palette) : [];
 
   return (
     <div className="space-y-6">
@@ -89,6 +90,16 @@ export function FieldsPanel({ template }: { template: TemplateDef }) {
                 {es.editor.colors[slot]}
               </label>
             ))}
+          </div>
+          <div role="status" aria-live="polite">
+            {issues.length > 0 && (
+              <div className="rounded-md bg-amber-50 p-3 text-sm text-amber-900 ring-1 ring-amber-300">
+                <p className="font-semibold">{es.editor.contrastTitle}</p>
+                <ul className="mt-1 list-disc pl-5">
+                  {issues.map((i) => <li key={i.slot}>{es.editor.contrastIssue(i.slot, i.ratio)}</li>)}
+                </ul>
+              </div>
+            )}
           </div>
         </section>
       )}

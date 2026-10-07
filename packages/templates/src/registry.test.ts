@@ -8,6 +8,7 @@ describe('registry', () => {
   });
   it('filtra por formato', () => {
     expect(templatesFor('yt-thumb').map((t) => t.id)).toEqual(['yt-impacto', 'yt-versiculo']);
+    expect(templatesFor('ig-post').map((t) => t.id)).toEqual(['ig-evento']);
     expect(templatesFor('ig-carousel')).toEqual([]);
   });
 });
