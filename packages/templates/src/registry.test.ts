@@ -9,6 +9,6 @@ describe('registry', () => {
   it('filtra por formato', () => {
     expect(templatesFor('yt-thumb').map((t) => t.id)).toEqual(['yt-impacto', 'yt-versiculo']);
     expect(templatesFor('ig-post').map((t) => t.id)).toEqual(['ig-evento']);
-    expect(templatesFor('ig-carousel')).toEqual([]);
+    expect(templatesFor('ig-carousel').map((t) => t.id)).toEqual(['ig-ruta']);
   });
 });

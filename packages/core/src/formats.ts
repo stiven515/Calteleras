@@ -36,7 +36,7 @@ export const FORMATS: Record<FormatId, FormatSpec> = {
     label: 'Carrusel panorámico de Instagram',
     width: 1080,
     height: 1350,
-    slides: { min: 2, max: 10, default: 3 },
+    slides: { min: 2, max: 10, default: 4 },
     safeZones: [],
   },
   'yt-banner': {

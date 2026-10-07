@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { ytImpacto } from '@cartelera/templates';
+import { igRuta, ytImpacto } from '@cartelera/templates';
 import { useEditor } from './stores/editorStore';
 
 describe('editorStore', () => {
@@ -20,6 +20,19 @@ describe('editorStore', () => {
     expect(useEditor.getState().safeView).toBeNull();
     useEditor.getState().setSafeView('mobile');
     expect(useEditor.getState().safeView).toBe('mobile');
+  });
+  it('el carrusel carga con 4 imágenes y respeta los límites', () => {
+    useEditor.getState().load(igRuta);
+    expect(useEditor.getState().slides).toBe(4);
+    useEditor.getState().setSlides(99);
+    expect(useEditor.getState().slides).toBe(10);
+    useEditor.getState().setSlides(0);
+    expect(useEditor.getState().slides).toBe(2);
+  });
+  it('un formato sin carrusel queda en 1 imagen', () => {
+    useEditor.getState().load(ytImpacto);
+    useEditor.getState().setSlides(5);
+    expect(useEditor.getState().slides).toBe(1);
   });
   it('cambia un color de la paleta sin mutar el original', () => {
     useEditor.getState().load(ytImpacto);

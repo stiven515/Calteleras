@@ -35,7 +35,17 @@ export function AutoFitText({ text, min, max, style }: Props) {
   return (
     <div
       ref={ref}
-      style={{ width: '100%', height: '100%', overflow: 'hidden', overflowWrap: 'anywhere', fontSize: size, ...style }}
+      style={{
+        width: '100%',
+        height: '100%',
+        boxSizing: 'border-box',
+        // Margen superior para que no se corten las tildes de mayúsculas (Á, Ñ) con line-height bajo.
+        paddingTop: '0.12em',
+        overflow: 'hidden',
+        overflowWrap: 'anywhere',
+        fontSize: size,
+        ...style,
+      }}
     >
       {text}
     </div>

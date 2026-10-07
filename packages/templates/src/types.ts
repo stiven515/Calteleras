@@ -7,6 +7,9 @@ export interface TemplateProps {
   fonts: FontPair;
   /** Tamaño real del lienzo en píxeles (en carrusel, N × ancho). */
   size: { w: number; h: number };
+  /** Solo carrusel: cuántas imágenes forman el panorama y el ancho de cada una (size.w = slides × slideWidth). */
+  slides?: number;
+  slideWidth?: number;
   /** id de asset → URL utilizable en <img>. */
   assets: Record<string, string>;
   mode: 'preview' | 'export';

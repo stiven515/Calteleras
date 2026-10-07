@@ -31,6 +31,14 @@ export const es = {
     empty: 'Estamos preparando plantillas para este formato. Vuelve pronto.',
     use: (name: string) => `Usar la plantilla ${name}`,
   },
+  carousel: {
+    countLabel: 'Imágenes',
+    fewer: 'Quitar una imagen',
+    more: 'Agregar una imagen',
+    showCuts: 'Mostrar cortes',
+    stripLabel: 'Así quedarán las imágenes, en orden',
+    exportSoon: 'La descarga en imágenes numeradas (ZIP) llega en el siguiente paso.',
+  },
   safeZones: {
     title: 'Zonas seguras',
     hide: 'Ocultar',
