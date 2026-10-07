@@ -1,0 +1,12 @@
+{
+  "name": "cartelera",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @cartelera/web dev",
+    "build": "pnpm --filter @cartelera/web build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "packageManager": "pnpm@10.34.6"
+}

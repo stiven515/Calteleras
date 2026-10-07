@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+@import '@fontsource/anton';
+@import '@fontsource-variable/inter';
+
+:root {
+  color-scheme: light;
+}
+body {
+  font-family: 'Inter Variable', system-ui, sans-serif;
+  background: #f6f5f1;
+  color: #14161c;
+}
