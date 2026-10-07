@@ -14,9 +14,14 @@ export interface Rect {
   h: number;
 }
 
+/** Dónde se ve la pieza: define qué zonas seguras aplican. */
+export type SafeZoneView = 'mobile' | 'desktop' | 'profile-grid';
+
 export interface SafeZone {
   id: string;
   label: string;
+  /** Vistas en las que esta zona es relevante. */
+  views: SafeZoneView[];
   /** keep-inside: el contenido importante debe quedar dentro. covered/cropped: zona que se tapa o se corta. */
   kind: 'keep-inside' | 'covered' | 'cropped';
   rect: Rect;

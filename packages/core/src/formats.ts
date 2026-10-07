@@ -1,4 +1,4 @@
-import type { FormatId, FormatSpec } from './types';
+import type { FormatId, FormatSpec, SafeZone, SafeZoneView } from './types';
 
 export const FORMATS: Record<FormatId, FormatSpec> = {
   'yt-thumb': {
@@ -10,6 +10,7 @@ export const FORMATS: Record<FormatId, FormatSpec> = {
       {
         id: 'timestamp',
         label: 'Duración del video',
+        views: ['mobile', 'desktop'],
         kind: 'covered',
         rect: { x: 0.84, y: 0.86, w: 0.16, h: 0.14 },
       },
@@ -24,6 +25,7 @@ export const FORMATS: Record<FormatId, FormatSpec> = {
       {
         id: 'grid-crop',
         label: 'Recorte en la cuadrícula del perfil (3:4)',
+        views: ['profile-grid'],
         kind: 'keep-inside',
         rect: { x: 0.0, y: 0.0417, w: 1, h: 0.9167 },
       },
@@ -46,6 +48,7 @@ export const FORMATS: Record<FormatId, FormatSpec> = {
       {
         id: 'all-devices',
         label: 'Visible en todos los dispositivos',
+        views: ['mobile', 'desktop'],
         kind: 'keep-inside',
         rect: { x: (2560 - 1546) / 2 / 2560, y: (1440 - 423) / 2 / 1440, w: 1546 / 2560, h: 423 / 1440 },
       },
@@ -54,6 +57,16 @@ export const FORMATS: Record<FormatId, FormatSpec> = {
   'fb-cover': { id: 'fb-cover', label: 'Portada de Facebook', width: 1640, height: 624, safeZones: [] },
   'ig-story': { id: 'ig-story', label: 'Historia o reel', width: 1080, height: 1920, safeZones: [] },
 };
+
+/** Vistas con al menos una zona segura en este formato, en orden estable. */
+export function availableViews(format: FormatSpec): SafeZoneView[] {
+  const order: SafeZoneView[] = ['mobile', 'desktop', 'profile-grid'];
+  return order.filter((v) => format.safeZones.some((z) => z.views.includes(v)));
+}
+
+export function zonesForView(format: FormatSpec, view: SafeZoneView): SafeZone[] {
+  return format.safeZones.filter((z) => z.views.includes(view));
+}
 
 /** Formatos activos en el MVP. */
 export const MVP_FORMATS: FormatId[] = ['yt-thumb', 'ig-post', 'ig-carousel'];

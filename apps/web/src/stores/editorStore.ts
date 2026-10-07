@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { FieldValues, Palette } from '@cartelera/core';
+import type { FieldValues, Palette, SafeZoneView } from '@cartelera/core';
 import type { TemplateDef } from '@cartelera/templates';
 
 interface EditorState {
@@ -8,6 +8,9 @@ interface EditorState {
   palette: Palette | null;
   /** assetId → objectURL (en sesión; la persistencia llega con IndexedDB). */
   assets: Record<string, string>;
+  /** Vista de zonas seguras mostrada en la vista previa (null = oculta). Solo ayuda visual. */
+  safeView: SafeZoneView | null;
+  setSafeView: (v: SafeZoneView | null) => void;
   load: (t: TemplateDef) => void;
   setValue: (key: string, value: string | boolean | null) => void;
   setColor: (slot: keyof Palette, value: string) => void;
@@ -19,6 +22,8 @@ export const useEditor = create<EditorState>((set, get) => ({
   values: {},
   palette: null,
   assets: {},
+  safeView: null,
+  setSafeView: (safeView) => set({ safeView }),
   load: (t) => {
     if (get().templateId === t.id) return;
     set({ templateId: t.id, values: { ...t.defaults }, palette: { ...t.palette } });

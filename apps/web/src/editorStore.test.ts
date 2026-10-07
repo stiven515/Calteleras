@@ -16,6 +16,11 @@ describe('editorStore', () => {
     s.load(ytImpacto);
     expect(useEditor.getState().values.title).toBe('Hola');
   });
+  it('la vista de zonas seguras empieza oculta y se puede cambiar', () => {
+    expect(useEditor.getState().safeView).toBeNull();
+    useEditor.getState().setSafeView('mobile');
+    expect(useEditor.getState().safeView).toBe('mobile');
+  });
   it('cambia un color de la paleta sin mutar el original', () => {
     useEditor.getState().load(ytImpacto);
     useEditor.getState().setColor('accent', '#ff0000');

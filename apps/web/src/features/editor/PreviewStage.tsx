@@ -4,10 +4,12 @@ interface Props {
   width: number;
   height: number;
   children: ReactNode;
+  /** Capa sin escalar encima del lienzo (ayudas visuales que no se exportan). */
+  overlay?: ReactNode;
 }
 
 /** Muestra un lienzo de tamaño real escalado para caber en el contenedor. El export NO usa este escalado. */
-export function PreviewStage({ width, height, children }: Props) {
+export function PreviewStage({ width, height, children, overlay }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -30,6 +32,7 @@ export function PreviewStage({ width, height, children }: Props) {
       aria-label="Vista previa del diseño"
     >
       <div style={{ width, height, transform: `scale(${scale})`, transformOrigin: 'top left' }}>{children}</div>
+      {overlay}
     </div>
   );
 }

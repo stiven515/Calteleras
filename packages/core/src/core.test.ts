@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FORMATS, MVP_FORMATS, autoFit, canvasSize, computeSlices } from './index';
+import { FORMATS, MVP_FORMATS, autoFit, availableViews, canvasSize, computeSlices, zonesForView } from './index';
 
 describe('formats', () => {
   it('todas las zonas seguras están dentro del lienzo', () => {
@@ -18,6 +18,18 @@ describe('formats', () => {
     const r = f.safeZones[0]!.rect;
     expect(Math.round(r.w * f.width)).toBe(1546);
     expect(Math.round(r.h * f.height)).toBe(423);
+  });
+  it('toda zona declara al menos una vista', () => {
+    for (const f of Object.values(FORMATS)) for (const z of f.safeZones) expect(z.views.length).toBeGreaterThan(0);
+  });
+  it('lista las vistas disponibles por formato', () => {
+    expect(availableViews(FORMATS['yt-thumb'])).toEqual(['mobile', 'desktop']);
+    expect(availableViews(FORMATS['ig-post'])).toEqual(['profile-grid']);
+    expect(availableViews(FORMATS['ig-story'])).toEqual([]);
+  });
+  it('filtra zonas por vista', () => {
+    expect(zonesForView(FORMATS['yt-thumb'], 'desktop').map((z) => z.id)).toEqual(['timestamp']);
+    expect(zonesForView(FORMATS['yt-thumb'], 'profile-grid')).toEqual([]);
   });
   it('el MVP tiene 3 formatos', () => expect(MVP_FORMATS).toHaveLength(3));
   it('el carrusel multiplica el ancho por el número de slides', () => {

@@ -31,6 +31,12 @@ export const es = {
     empty: 'Estamos preparando plantillas para este formato. Vuelve pronto.',
     use: (name: string) => `Usar la plantilla ${name}`,
   },
+  safeZones: {
+    title: 'Zonas seguras',
+    hide: 'Ocultar',
+    views: { mobile: 'Celular', desktop: 'Computador', 'profile-grid': 'Cuadrícula del perfil' },
+    help: 'En rojo lo que se tapa. Lo importante debe quedar dentro de la línea punteada. Esta ayuda no aparece en la imagen descargada.',
+  },
   export: {
     title: 'Descargar',
     formatLabel: 'Formato de archivo',
