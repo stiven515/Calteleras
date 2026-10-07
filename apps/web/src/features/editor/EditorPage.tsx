@@ -4,6 +4,7 @@ import { FORMATS } from '@cartelera/core';
 import { getTemplate } from '@cartelera/templates';
 import { es } from '../../i18n/es';
 import { useEditor } from '../../stores/editorStore';
+import { ExportBar } from './ExportBar';
 import { FieldsPanel } from './FieldsPanel';
 import { PreviewStage } from './PreviewStage';
 
@@ -43,8 +44,9 @@ export function EditorPage() {
           </PreviewStage>
         )}
       </section>
-      <aside className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-black/10">
+      <aside className="space-y-6 rounded-lg bg-white p-5 shadow-sm ring-1 ring-black/10">
         <FieldsPanel template={template} />
+        <ExportBar template={template} format={format} />
       </aside>
     </main>
   );

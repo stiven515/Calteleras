@@ -13,4 +13,11 @@ export const es = {
     removeImage: 'Quitar',
     colors: { bg: 'Fondo', fg: 'Texto', accent: 'Acento', muted: 'Secundario' },
   },
+  export: {
+    title: 'Descargar',
+    formatLabel: 'Formato de archivo',
+    download: 'Descargar',
+    working: 'Generando…',
+    error: 'No se pudo generar la imagen. Intenta de nuevo.',
+  },
 } as const;
