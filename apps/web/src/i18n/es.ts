@@ -10,8 +10,23 @@ export const es = {
     palette: 'Colores',
     notFound: 'Esa plantilla no existe.',
     back: 'Volver',
+    otherTemplate: '← Elegir otra plantilla',
     removeImage: 'Quitar',
     colors: { bg: 'Fondo', fg: 'Texto', accent: 'Acento', muted: 'Secundario' },
+  },
+  create: {
+    title: '¿Qué quieres crear?',
+    subtitle: 'Elige el formato y te mostramos plantillas listas para personalizar.',
+    carouselNote: 'varias imágenes',
+    comingSoon: 'Próximamente',
+    templatesCount: (n: number) => (n === 1 ? '1 plantilla' : `${n} plantillas`),
+    unknownFormat: 'Ese formato no existe.',
+    changeFormat: '← Cambiar formato',
+  },
+  gallery: {
+    subtitle: 'Elige una plantilla. Después podrás cambiar textos, imágenes y colores.',
+    empty: 'Estamos preparando plantillas para este formato. Vuelve pronto.',
+    use: (name: string) => `Usar la plantilla ${name}`,
   },
   export: {
     title: 'Descargar',

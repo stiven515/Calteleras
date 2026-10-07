@@ -29,7 +29,10 @@ export function EditorPage() {
   const format = FORMATS[template.formats[0]!];
 
   return (
-    <main className="mx-auto grid max-w-7xl gap-8 p-4 md:grid-cols-[minmax(0,1fr)_360px] md:p-8">
+    <main className="mx-auto grid max-w-7xl grid-cols-1 gap-8 p-4 md:grid-cols-[minmax(0,1fr)_360px] md:p-8">
+      <Link className="text-sm text-indigo-700 underline md:col-span-2" to={`/crear/${format.id}`}>
+        {es.editor.otherTemplate}
+      </Link>
       <section aria-label="Vista previa">
         {palette && (
           <PreviewStage width={format.width} height={format.height}>

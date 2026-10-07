@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '@fontsource/anton';
+@import '@fontsource/playfair-display/700.css';
 @import '@fontsource-variable/inter';
 
 :root {
