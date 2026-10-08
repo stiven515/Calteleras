@@ -8,6 +8,11 @@ export const es = {
     brand: 'Mi marca',
     profile: 'Perfil',
     newDesign: 'Nuevo diseño',
+    noStorage:
+      'Este navegador no permite guardar en el dispositivo (¿modo privado?). Puedes crear y descargar, pero tus cambios se perderán al cerrar o recargar.',
+    home: 'Ir al inicio',
+    notFoundTitle: 'Esta página no existe',
+    notFoundText: 'Revisa el enlace o vuelve al inicio.',
     signIn: 'Entrar',
     profileOf: (email: string) => `Perfil de ${email}`,
   },

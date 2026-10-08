@@ -41,14 +41,21 @@ async function applyUser(u: User | null): Promise<void> {
   }
 
   await useStorage.getState().switchTo(u.id);
-  // Lo que se hizo como invitado pasa a la cuenta, y la base de invitado se vacía.
-  const guestDb = await openLocalDb(GUEST);
+  // Lo que se hizo como invitado pasa a la cuenta, y la base de invitado se vacía solo si todo se copió bien.
+  // Si algo falla se conserva intacta (se reintenta en el próximo inicio de sesión) y la sesión igual se abre.
+  let migrated = false;
   try {
-    await moveLocalData(createLocalRepos(guestDb), requireRepos());
-  } finally {
-    guestDb.close();
+    const guestDb = await openLocalDb(GUEST);
+    try {
+      await moveLocalData(createLocalRepos(guestDb), requireRepos());
+      migrated = true;
+    } finally {
+      guestDb.close();
+    }
+  } catch {
+    // Sin IndexedDB o con un fallo de copia: no hay nada que borrar.
   }
-  await deleteLocalDb(GUEST);
+  if (migrated) await deleteLocalDb(GUEST).catch(() => undefined);
 
   setRemote(createRemoteRepos(supabase, u.id));
   useAuth.setState({ user: { id: u.id, email: u.email ?? '' }, ready: true });

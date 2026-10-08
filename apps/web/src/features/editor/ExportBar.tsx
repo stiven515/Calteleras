@@ -1,9 +1,15 @@
 import { useState } from 'react';
-import type { FormatSpec } from '@cartelera/core';
+import type { FieldValues, FormatSpec } from '@cartelera/core';
 import type { TemplateDef } from '@cartelera/templates';
 import { es } from '../../i18n/es';
 import { useEditor } from '../../stores/editorStore';
+import { deriveTitle } from './design';
 import { downloadBlob, exportFilename, renderToBlob, type ExportFormat } from '../export/export';
+
+/** Nombre del archivo: el título del diseño o, si no lo hay, su texto principal (igual que en "Mis diseños"). */
+function baseName(title: string, template: TemplateDef, values: FieldValues): string {
+  return title.trim() || deriveTitle(template, values);
+}
 
 export function ExportBar({ template, format }: { template: TemplateDef; format: FormatSpec }) {
   const [ext, setExt] = useState<ExportFormat>('png');
@@ -14,7 +20,7 @@ export function ExportBar({ template, format }: { template: TemplateDef; format:
   const isCarousel = format.slides !== undefined;
 
   async function exportSingle() {
-    const { values, palette, fonts, assets } = useEditor.getState();
+    const { values, palette, fonts, assets, title } = useEditor.getState();
     if (!palette || !fonts) return;
     const blob = await renderToBlob({
       element: (
@@ -32,11 +38,11 @@ export function ExportBar({ template, format }: { template: TemplateDef; format:
       format: ext,
       background: palette.bg,
     });
-    downloadBlob(blob, exportFilename(String(values.title ?? template.id), ext));
+    downloadBlob(blob, exportFilename(baseName(title, template, values), ext));
   }
 
   async function exportCarousel() {
-    const { values, palette, fonts, assets, slides: count } = useEditor.getState();
+    const { values, palette, fonts, assets, slides: count, title } = useEditor.getState();
     if (!palette || !fonts) return;
     const { renderCarouselSlices } = await import('../export/carousel');
     const { blobToBytes, zipFiles } = await import('../export/zip');
@@ -46,7 +52,7 @@ export function ExportBar({ template, format }: { template: TemplateDef; format:
     });
     const files: Record<string, Uint8Array> = {};
     for (const [i, blob] of blobs.entries()) files[exportFilename('x', ext, i)] = await blobToBytes(blob);
-    const base = exportFilename(String(values.title ?? template.id), 'png').replace(/\.png$/, '');
+    const base = exportFilename(baseName(title, template, values), 'png').replace(/\.png$/, '');
     downloadBlob(zipFiles(files), `${base}.zip`);
   }
 

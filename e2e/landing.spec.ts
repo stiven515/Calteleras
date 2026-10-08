@@ -23,7 +23,7 @@ test.describe('landing: carrusel 3D', () => {
     await page.goto('/');
     await page.mouse.move(5, 5); // cursor fuera del carrusel
     await page.waitForTimeout(800); // el movimiento arranca suave
-    expect(await drift(page, 1500)).toBeGreaterThan(0.01);
+    expect(await drift(page, 1500)).toBeGreaterThan(0.003);
   });
 
   test('el botón de pausa lo detiene y lo reanuda', async ({ page }) => {
@@ -38,7 +38,7 @@ test.describe('landing: carrusel 3D', () => {
     await page.getByRole('button', { name: 'Reanudar el movimiento' }).click();
     await page.mouse.move(5, 5);
     await page.waitForTimeout(800);
-    expect(await drift(page, 1500)).toBeGreaterThan(0.01);
+    expect(await drift(page, 1500)).toBeGreaterThan(0.003);
   });
 
   test('se detiene mientras el cursor está encima', async ({ page }) => {

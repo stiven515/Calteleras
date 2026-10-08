@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AccountLayout } from './app/AccountLayout';
 import { AppShell } from './app/AppShell';
 import { Home } from './app/Home';
+import { NotFound } from './app/NotFound';
 import { MyDesigns } from './features/account/MyDesigns';
 import { FormatPicker } from './features/gallery/FormatPicker';
 import { TemplateGallery } from './features/gallery/TemplateGallery';
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="marca" element={<BrandKitPage />} />
               <Route path="perfil" element={<ProfilePage />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </Suspense>

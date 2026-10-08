@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FORMATS, availableViews, canvasSize } from '@cartelera/core';
 import { getTemplate } from '@cartelera/templates';
@@ -43,17 +43,32 @@ export function EditorPage() {
       const d = await repos.designs.get(designId);
       if (cancelled) return;
       if (!d) return setMissing(true);
+      if (d.templateId !== template.id) {
+        // La URL traía otra plantilla: se abre la del diseño en vez de mezclar datos con la plantilla equivocada.
+        navigate(`/editor/${d.templateId}/${d.id}`, { replace: true });
+        return;
+      }
       const urls = await resolveAssetUrls(assetIdsOf(d, template));
       if (!cancelled) useEditor.getState().hydrate(d, urls);
     })();
     return () => {
       cancelled = true;
     };
-  }, [template, designId, repos]);
+  }, [template, designId, repos, navigate]);
+
+  // El guardado al salir del editor termina cuando la persona ya está en otra página: en ese caso
+  // NO se debe navegar de vuelta al editor para fijar la URL del diseño.
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   const status = useAutosave(template, (d) => {
     scheduleSync();
-    if (!designId) navigate(`/editor/${d.templateId}/${d.id}`, { replace: true });
+    if (!designId && mounted.current) navigate(`/editor/${d.templateId}/${d.id}`, { replace: true });
   });
 
   if (!template) {

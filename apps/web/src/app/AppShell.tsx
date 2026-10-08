@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigationType } from 'react-router-dom';
 import { es } from '../i18n/es';
 import { useAuth } from '../features/auth/authStore';
+import { useStorage } from '../features/storage/storageStore';
 
 const link = ({ isActive }: { isActive: boolean }) =>
   `whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium ${isActive ? 'bg-neutral-100 text-black' : 'text-neutral-600 hover:text-black'}`;
@@ -20,6 +21,7 @@ function LogoMark() {
 
 export function AppShell() {
   const { enabled, ready, user } = useAuth();
+  const persistent = useStorage((s) => s.persistent);
 
   // Arranque: decide si hay sesión guardada y abre el almacenamiento local que corresponde.
   useEffect(() => {
@@ -27,15 +29,19 @@ export function AppShell() {
   }, []);
 
   // Al navegar, el foco pasa al contenido: así quien usa teclado o lector de pantalla no se queda en el menú.
+  // Excepción: un REPLACE (p. ej. el editor fijando el id del diseño tras el primer autoguardado) no es
+  // una navegación de la persona, y mover el foco le quitaría el cursor del campo en el que está escribiendo.
   const { pathname } = useLocation();
+  const navType = useNavigationType();
   const first = useRef(true);
   useEffect(() => {
     if (first.current) {
       first.current = false;
       return;
     }
+    if (navType === 'REPLACE') return;
     document.getElementById('contenido')?.focus({ preventScroll: true });
-  }, [pathname]);
+  }, [pathname, navType]);
 
   return (
     <>
@@ -68,6 +74,11 @@ export function AppShell() {
           </Link>
         </nav>
       </header>
+      {!persistent && (
+        <p role="status" className="bg-amber-100 px-4 py-2 text-center text-sm text-amber-950">
+          {es.nav.noStorage}
+        </p>
+      )}
       <div id="contenido" tabIndex={-1} className="outline-none">
         <Outlet />
       </div>

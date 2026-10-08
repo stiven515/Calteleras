@@ -4,7 +4,7 @@ import type { LocalRepos } from './repos';
 
 interface Schema extends DBSchema {
   designs: { key: string; value: Design };
-  assets: { key: string; value: { id: string; blob: Blob } };
+  assets: { key: string; value: { id: string; buf?: ArrayBuffer; type?: string; blob?: Blob } };
   brand: { key: string; value: BrandKit };
   tombstones: { key: string; value: { id: string; at: number } };
 }
@@ -31,6 +31,17 @@ export async function deleteLocalDb(principal: Principal): Promise<void> {
   await deleteDB(dbName(principal));
 }
 
+/** Bytes de un Blob (con alternativa para navegadores sin `Blob.arrayBuffer`). */
+function toBuffer(blob: Blob): Promise<ArrayBuffer> {
+  if (typeof blob.arrayBuffer === 'function') return blob.arrayBuffer();
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result as ArrayBuffer);
+    r.onerror = () => reject(r.error);
+    r.readAsArrayBuffer(blob);
+  });
+}
+
 export function createLocalRepos(db: IDBPDatabase<Schema>): LocalRepos {
   return {
     designs: {
@@ -52,10 +63,15 @@ export function createLocalRepos(db: IDBPDatabase<Schema>): LocalRepos {
     },
     assets: {
       async get(id) {
-        return (await db.get('assets', id))?.blob;
+        const rec = await db.get('assets', id);
+        if (!rec) return undefined;
+        // Registros nuevos: bytes + tipo. Registros antiguos: el Blob tal cual.
+        return rec.buf ? new Blob([rec.buf], { type: rec.type ?? '' }) : rec.blob;
       },
       async put(id, blob) {
-        await db.put('assets', { id, blob });
+        // Se guardan bytes y no el Blob: WebKit falla al guardar Blobs en IndexedDB en modo privado y
+        // contextos efímeros, y las imágenes de la persona dejarían de poder subirse.
+        await db.put('assets', { id, buf: await toBuffer(blob), type: blob.type });
       },
       async has(id) {
         return (await db.getKey('assets', id)) !== undefined;

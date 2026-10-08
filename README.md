@@ -108,12 +108,12 @@ Sin configurar nada, la app funciona completa en modo local (sin cuentas ni nube
 
 ```bash
 pnpm typecheck
-pnpm test           # Vitest: 96 pruebas (core, plantillas, app)
+pnpm test           # Vitest: 102 pruebas (core, plantillas, app)
 pnpm test:e2e       # Playwright en Chromium/Edge
 pnpm test:e2e:all   # además WebKit (Safari) y Firefox
 ```
 
-Los tests de extremo a extremo cubren: exportación PNG/JPG a tamaño real, ZIP del carrusel con comprobación de píxeles en los cortes, guardado y recuperación tras recargar, duplicar y eliminar, aplicar la marca, y accesibilidad con axe.
+Los tests de extremo a extremo (33 por navegador) cubren: exportación PNG/JPG a tamaño real, ZIP del carrusel con comprobación de píxeles en los cortes, foto subida visible en lo exportado, guardado y recuperación tras recargar, duplicar y eliminar, aplicar la marca, la galería 3D y accesibilidad con axe. `e2e/qa-regresiones.spec.ts` reúne los errores encontrados en la revisión de calidad para que no vuelvan.
 
 ## Despliegue
 
