@@ -11,7 +11,7 @@ const SLICES = 4;
 
 /** Alto de tarjeta según el ancho de pantalla (más bajo en celular para que se vean varias a la vez). */
 export function cardHeightFor(viewportWidth: number): number {
-  return viewportWidth < 640 ? 230 : 300;
+  return viewportWidth < 640 ? 230 : 320;
 }
 
 function whole(t: TemplateDef, h: number): CarouselCard {

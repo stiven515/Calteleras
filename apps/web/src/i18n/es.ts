@@ -102,8 +102,8 @@ export const es = {
   landing: {
     carouselLabel: 'Ejemplos de plantillas',
     carouselHint: 'Arrastra o usa las flechas del teclado para ver más plantillas',
-    prev: 'Ver plantillas anteriores',
-    next: 'Ver plantillas siguientes',
+    pause: 'Pausar el movimiento',
+    play: 'Reanudar el movimiento',
     ctaLink: 'Crear mi diseño',
     howLink: 'Ver cómo funciona',
   },
