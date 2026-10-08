@@ -1,8 +1,10 @@
 import type { TemplateDef, TemplateProps } from '../types';
 import { AutoFitText } from '../AutoFitText';
+import { Logo, assetOf } from '../Logo';
 
 function IgEvento({ values, palette, fonts, size, assets }: TemplateProps) {
-  const photo = typeof values.photo === 'string' ? assets[values.photo] : undefined;
+  const photo = assetOf(values, 'photo', assets);
+  const logo = assetOf(values, 'logo', assets);
   const kicker = String(values.kicker ?? '');
   const title = String(values.title ?? '');
   const date = String(values.date ?? '');
@@ -54,6 +56,7 @@ function IgEvento({ values, palette, fonts, size, assets }: TemplateProps) {
           background: `linear-gradient(to bottom, transparent, ${palette.bg})`,
         }}
       />
+      <Logo src={logo} style={{ position: 'absolute', left: 72, top: 84, height: 120, maxWidth: 320 }} />
       <div style={{ position: 'absolute', left: 72, right: 72, top: 700, bottom: 90, display: 'flex', flexDirection: 'column', gap: 28 }}>
         {kicker && (
           <div style={{ flex: 'none', color: palette.accent, fontSize: 36, fontWeight: 800, letterSpacing: 8, textTransform: 'uppercase' }}>
@@ -90,6 +93,7 @@ export const igEvento: TemplateDef = {
     { key: 'time', type: 'text', label: 'Hora', maxLength: 20 },
     { key: 'place', type: 'text', label: 'Lugar', maxLength: 48 },
     { key: 'photo', type: 'image', label: 'Foto superior' },
+    { key: 'logo', type: 'image', label: 'Tu logo' },
   ],
   defaults: {
     kicker: 'Te invitamos',
@@ -98,6 +102,7 @@ export const igEvento: TemplateDef = {
     time: '7:00 pm',
     place: 'Templo Central · Calle 10 #5-20',
     photo: null,
+    logo: null,
   },
   palette: { bg: '#12372a', fg: '#f4efe6', accent: '#e9b44c', muted: '#b9c9bf' },
   fonts: { heading: "'Anton', Impact, sans-serif", body: "'Inter Variable', system-ui, sans-serif" },

@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import { domToBlob } from 'modern-screenshot';
 
 export type ExportFormat = 'png' | 'jpg';
 
@@ -20,8 +19,9 @@ export async function waitForAssets(root: HTMLElement): Promise<void> {
   await document.fonts.ready;
   const imgs = Array.from(root.querySelectorAll('img'));
   await Promise.all(imgs.map((img) => img.decode().catch(() => undefined)));
-  // Un frame más para que AutoFitText termine de recalcular tras cargar fuentes.
-  await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+  // Margen para que AutoFitText termine de recalcular tras cargar fuentes. Se usa setTimeout y no
+  // requestAnimationFrame: rAF no se dispara en pestañas ocultas y la exportación se colgaría.
+  await new Promise<void>((r) => setTimeout(r, 60));
 }
 
 interface RenderOptions {
@@ -47,6 +47,8 @@ export async function renderToBlob(opts: RenderOptions): Promise<Blob> {
   try {
     flushSync(() => root.render(opts.element));
     await waitForAssets(host);
+    // Se carga solo al exportar: la librería pesa y no hace falta para editar.
+    const { domToBlob } = await import('modern-screenshot');
     const blob = await domToBlob(host, {
       width: opts.width,
       height: opts.height,

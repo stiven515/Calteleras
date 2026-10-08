@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 @import '@fontsource/anton';
+@import '@fontsource/bebas-neue';
+@import '@fontsource-variable/montserrat';
 @import '@fontsource/playfair-display/700.css';
 @import '@fontsource-variable/inter';
 
@@ -8,6 +10,6 @@
 }
 body {
   font-family: 'Inter Variable', system-ui, sans-serif;
-  background: #f6f5f1;
-  color: #14161c;
+  background: #ffffff;
+  color: #0a0a0a;
 }

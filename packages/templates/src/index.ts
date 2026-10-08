@@ -6,3 +6,5 @@ export { ytVersiculo } from './yt-versiculo';
 export { igEvento } from './ig-evento';
 export { igRuta } from './ig-ruta';
 export { slideContents, splitLines } from './lines';
+export { igCita } from './ig-cita';
+export { Logo, assetOf } from './Logo';

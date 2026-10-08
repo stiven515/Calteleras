@@ -6,7 +6,16 @@
     "dev": "pnpm --filter @cartelera/web dev",
     "build": "pnpm --filter @cartelera/web build",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:all": "playwright test"
   },
-  "packageManager": "pnpm@10.34.6"
+  "packageManager": "pnpm@10.34.6",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/pngjs": "^6.0.5",
+    "fflate": "^0.8.3",
+    "pngjs": "^7.0.0"
+  }
 }

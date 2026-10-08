@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { FORMATS, MVP_FORMATS } from '@cartelera/core';
 import { templatesFor } from '@cartelera/templates';
+import { useDocumentTitle } from '../../app/useDocumentTitle';
 import { es } from '../../i18n/es';
 
 export function FormatPicker() {
+  useDocumentTitle(es.create.title);
   return (
     <main className="mx-auto max-w-4xl px-4 py-12">
       <h1 className="text-3xl font-bold tracking-tight">{es.create.title}</h1>
@@ -16,15 +18,15 @@ export function FormatPicker() {
             <li key={id}>
               <Link
                 to={`/crear/${id}`}
-                className="block h-full rounded-xl bg-white p-5 shadow-sm ring-1 ring-black/10 transition hover:ring-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="block h-full rounded-xl bg-white p-5 shadow-sm ring-1 ring-black/10 transition hover:ring-black focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <div
                   aria-hidden="true"
-                  className="mb-4 flex items-center justify-center rounded-md bg-indigo-50"
+                  className="mb-4 flex items-center justify-center rounded-md bg-neutral-100"
                   style={{ aspectRatio: '16 / 10' }}
                 >
                   <div
-                    className="rounded-sm bg-indigo-600/80"
+                    className="rounded-sm bg-black/80"
                     style={{ aspectRatio: `${f.width} / ${f.height}`, height: '70%', maxWidth: '85%' }}
                   />
                 </div>
@@ -33,7 +35,7 @@ export function FormatPicker() {
                   {f.width}×{f.height}
                   {f.slides ? ` · ${es.create.carouselNote}` : ''}
                 </p>
-                <p className="mt-2 text-sm text-indigo-700">
+                <p className="mt-2 text-sm text-black">
                   {count > 0 ? es.create.templatesCount(count) : es.create.comingSoon}
                 </p>
               </Link>

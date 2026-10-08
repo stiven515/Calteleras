@@ -25,7 +25,7 @@ export function SafeZoneControl({ format }: { format: FormatSpec }) {
             role="radio"
             aria-checked={active === o.value}
             onClick={() => setSafeView(o.value)}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium ring-1 ring-black/15 ${active === o.value ? 'bg-indigo-600 text-white' : 'bg-white'}`}
+            className={`rounded-md px-3 py-1.5 text-sm font-medium ring-1 ring-black/15 ${active === o.value ? 'bg-black text-white' : 'bg-white'}`}
           >
             {o.label}
           </button>

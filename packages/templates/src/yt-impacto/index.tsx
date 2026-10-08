@@ -1,8 +1,10 @@
 import type { TemplateDef, TemplateProps } from '../types';
 import { AutoFitText } from '../AutoFitText';
+import { Logo, assetOf } from '../Logo';
 
 function YtImpacto({ values, palette, fonts, size, assets }: TemplateProps) {
-  const photo = typeof values.photo === 'string' ? assets[values.photo] : undefined;
+  const photo = assetOf(values, 'photo', assets);
+  const logo = assetOf(values, 'logo', assets);
   const title = String(values.title ?? '');
   const subtitle = String(values.subtitle ?? '');
   const badge = String(values.badge ?? '');
@@ -26,6 +28,7 @@ function YtImpacto({ values, palette, fonts, size, assets }: TemplateProps) {
           style={{ position: 'absolute', right: 0, bottom: 0, height: '100%', width: '48%', objectFit: 'cover' }}
         />
       )}
+      <Logo src={logo} style={{ position: 'absolute', right: 56, top: 44, height: 92, maxWidth: 260 }} />
       <div style={{ position: 'absolute', left: 64, top: 56, width: '56%', bottom: 56, display: 'flex', flexDirection: 'column', gap: 24 }}>
         {badge && (
           <div
@@ -71,8 +74,9 @@ export const ytImpacto: TemplateDef = {
     { key: 'title', type: 'textarea', label: 'Título', maxLength: 60 },
     { key: 'subtitle', type: 'text', label: 'Subtítulo', maxLength: 70 },
     { key: 'photo', type: 'image', label: 'Foto' },
+    { key: 'logo', type: 'image', label: 'Tu logo' },
   ],
-  defaults: { badge: 'Nueva serie', title: 'Fe que mueve montañas', subtitle: 'Pastor Juan Pérez · Domingo 10:00 am', photo: null },
+  defaults: { badge: 'Nueva serie', title: 'Fe que mueve montañas', subtitle: 'Pastor Juan Pérez · Domingo 10:00 am', photo: null, logo: null },
   palette: { bg: '#0f1b3d', fg: '#ffffff', accent: '#ffc233', muted: '#c7d2f0' },
   fonts: { heading: "'Anton', Impact, sans-serif", body: "'Inter Variable', system-ui, sans-serif" },
   Component: YtImpacto,

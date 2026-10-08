@@ -61,11 +61,21 @@ export interface FontPair {
 export interface Design {
   v: 1;
   id: string;
+  title: string;
   templateId: string;
   formatId: FormatId;
   values: FieldValues;
   palette: Palette;
   fonts: FontPair;
   slides?: number;
+  updatedAt: number;
+}
+
+/** Kit de marca: se guarda una vez y se aplica a cualquier plantilla. */
+export interface BrandKit {
+  v: 1;
+  logoAssetId: string | null;
+  palette: Palette | null;
+  fonts: FontPair | null;
   updatedAt: number;
 }

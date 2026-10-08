@@ -1,6 +1,7 @@
 import type { TemplateDef, TemplateProps } from '../types';
 import { AutoFitText } from '../AutoFitText';
 import { slideContents, splitLines } from '../lines';
+import { Logo, assetOf } from '../Logo';
 
 /** Línea ondulada continua: cruza todos los cortes y tiene un punto en el centro de cada slide. */
 function wavePath(total: number, step: number, y: number, amp: number): string {
@@ -11,7 +12,8 @@ function wavePath(total: number, step: number, y: number, amp: number): string {
 
 function IgRuta({ values, palette, fonts, size, assets, slides = 1, slideWidth }: TemplateProps) {
   const sw = slideWidth ?? size.w;
-  const photo = typeof values.photo === 'string' ? assets[values.photo] : undefined;
+  const photo = assetOf(values, 'photo', assets);
+  const logo = assetOf(values, 'logo', assets);
   const title = String(values.title ?? '');
   const subtitle = String(values.subtitle ?? '');
   const items = slideContents(splitLines(values.points), String(values.cta ?? ''), slides);
@@ -46,6 +48,10 @@ function IgRuta({ values, palette, fonts, size, assets, slides = 1, slideWidth }
           <circle key={i} cx={(i + 0.5) * sw} cy={waveY} r={26} fill={palette.bg} stroke={palette.accent} strokeWidth={10} />
         ))}
       </svg>
+
+      {/* Logo en la portada y en la última imagen */}
+      <Logo src={logo} style={{ position: 'absolute', left: 72, top: 84, height: 100, maxWidth: 300 }} />
+      {slides > 1 && <Logo src={logo} style={{ position: 'absolute', left: (slides - 1) * sw + 72, top: 84, height: 100, maxWidth: 300 }} />}
 
       {/* Slide 1: portada */}
       <div style={{ position: 'absolute', left: 72, top: 470, width: sw - 144, height: 440 }}>
@@ -98,6 +104,7 @@ export const igRuta: TemplateDef = {
     { key: 'points', type: 'textarea', label: 'Un punto por línea (uno por slide)', maxLength: 400 },
     { key: 'cta', type: 'text', label: 'Mensaje final', maxLength: 40 },
     { key: 'photo', type: 'image', label: 'Foto en el círculo (opcional)' },
+    { key: 'logo', type: 'image', label: 'Tu logo' },
   ],
   defaults: {
     title: '3 hábitos para crecer en la fe',
@@ -105,6 +112,7 @@ export const igRuta: TemplateDef = {
     points: 'Ora cada mañana antes de tu celular\nLee un capítulo de la Biblia\nServe a alguien esta semana',
     cta: 'Guárdalo y compártelo',
     photo: null,
+    logo: null,
   },
   palette: { bg: '#10243a', fg: '#ffffff', accent: '#ff7a59', muted: '#a9c1dd' },
   fonts: { heading: "'Anton', Impact, sans-serif", body: "'Inter Variable', system-ui, sans-serif" },

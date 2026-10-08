@@ -4,8 +4,9 @@ import { ytImpacto } from './yt-impacto';
 import { ytVersiculo } from './yt-versiculo';
 import { igEvento } from './ig-evento';
 import { igRuta } from './ig-ruta';
+import { igCita } from './ig-cita';
 
-export const TEMPLATES: TemplateDef[] = [ytImpacto, ytVersiculo, igEvento, igRuta];
+export const TEMPLATES: TemplateDef[] = [ytImpacto, ytVersiculo, igEvento, igCita, igRuta];
 
 export function getTemplate(id: string): TemplateDef | undefined {
   return TEMPLATES.find((t) => t.id === id);

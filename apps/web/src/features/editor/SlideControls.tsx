@@ -2,7 +2,7 @@ import { es } from '../../i18n/es';
 import { useEditor } from '../../stores/editorStore';
 
 const btn =
-  'h-9 w-9 rounded-md bg-white text-lg font-semibold ring-1 ring-black/15 disabled:opacity-40 focus:outline-none focus:ring-2 focus:ring-indigo-600';
+  'h-9 w-9 rounded-md bg-white text-lg font-semibold ring-1 ring-black/15 disabled:opacity-40 focus:outline-none focus:ring-2 focus:ring-black';
 
 export function SlideControls() {
   const slides = useEditor((s) => s.slides);

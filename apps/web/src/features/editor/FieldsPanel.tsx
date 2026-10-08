@@ -1,18 +1,22 @@
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { checkPalette, type FieldDef, type Palette } from '@cartelera/core';
 import type { TemplateDef } from '@cartelera/templates';
 import { es } from '../../i18n/es';
 import { useEditor } from '../../stores/editorStore';
+import { saveUploadedImage } from '../storage/assets';
+import { BrandApply } from './BrandApply';
+import { TypographyPanel } from './TypographyPanel';
 
 const input =
-  'w-full rounded-md border border-black/15 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-indigo-600';
+  'w-full rounded-md border border-black/15 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-black';
 const label = 'mb-1 block text-sm font-medium';
 
 function Field({ def }: { def: FieldDef }) {
   const id = useId();
   const value = useEditor((s) => s.values[def.key]);
   const setValue = useEditor((s) => s.setValue);
-  const addAsset = useEditor((s) => s.addAsset);
+  const registerAsset = useEditor((s) => s.registerAsset);
+  const [uploadError, setUploadError] = useState(false);
 
   switch (def.type) {
     case 'text':
@@ -53,14 +57,23 @@ function Field({ def }: { def: FieldDef }) {
             id={id}
             type="file"
             accept="image/png,image/jpeg,image/webp"
-            className="block w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-indigo-600 file:px-3 file:py-2 file:text-white"
-            onChange={(e) => {
+            className="block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-black file:px-3 file:py-2 file:text-white"
+            onChange={async (e) => {
               const file = e.target.files?.[0];
-              if (file) setValue(def.key, addAsset(file));
+              if (!file) return;
+              setUploadError(false);
+              try {
+                const { id, url } = await saveUploadedImage(file);
+                registerAsset(id, url);
+                setValue(def.key, id);
+              } catch {
+                setUploadError(true);
+              }
             }}
           />
+          {uploadError && <p role="alert" className="mt-1 text-sm text-red-700">{es.editor.uploadError}</p>}
           {value ? (
-            <button type="button" className="mt-2 text-sm text-indigo-700 underline" onClick={() => setValue(def.key, null)}>
+            <button type="button" className="mt-2 text-sm text-black underline" onClick={() => setValue(def.key, null)}>
               {es.editor.removeImage}
             </button>
           ) : null}
@@ -76,6 +89,7 @@ export function FieldsPanel({ template }: { template: TemplateDef }) {
 
   return (
     <div className="space-y-6">
+      <BrandApply template={template} />
       <section aria-labelledby="sec-content" className="space-y-4">
         <h2 id="sec-content" className="text-lg font-semibold">{es.editor.fields}</h2>
         {template.fields.map((f) => <Field key={f.key} def={f} />)}
@@ -103,6 +117,7 @@ export function FieldsPanel({ template }: { template: TemplateDef }) {
           </div>
         </section>
       )}
+      <TypographyPanel />
     </div>
   );
 }

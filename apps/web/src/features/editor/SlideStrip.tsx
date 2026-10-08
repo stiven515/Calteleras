@@ -7,8 +7,8 @@ import { SliceFrame } from './SliceFrame';
 
 /** Cómo quedará cada imagen exportada, en el orden en que se suben a Instagram. */
 export function SlideStrip({ template, format }: { template: TemplateDef; format: FormatSpec }) {
-  const { values, palette, assets, slides } = useEditor();
-  if (!palette) return null;
+  const { values, palette, fonts, assets, slides } = useEditor();
+  if (!palette || !fonts) return null;
   const parts = computeSlices(slides, format.width, format.height);
 
   return (
@@ -22,7 +22,7 @@ export function SlideStrip({ template, format }: { template: TemplateDef; format
                 <template.Component
                   values={values}
                   palette={palette}
-                  fonts={template.fonts}
+                  fonts={fonts}
                   size={{ w: p.width * slides, h: p.height }}
                   slides={slides}
                   slideWidth={p.width}
